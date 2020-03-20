@@ -19,7 +19,17 @@ namespace Json2Xml
         /// <returns></returns>
         private static async Task Main(FileInfo file, bool outputToFile = true, FileInfo outputFile = null)
         {
-            if (!file.Exists) throw new InvalidOperationException($"File {file.FullName} does not exist");
+            if (file == null)
+            {
+                Console.WriteLine("Must specify a file");
+                return;
+            }
+
+            if (!file.Exists)
+            {
+                Console.WriteLine($"File {file.FullName} does not exist");
+                return;
+            }
 
             string json = default;
             XNode xml = default;
@@ -41,6 +51,7 @@ namespace Json2Xml
             {
                 Console.WriteLine("Whoops! There was an error when converting to XML!");
                 Console.WriteLine(e.Message);
+                return;
             }
 
             if (outputToFile)
