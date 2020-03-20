@@ -17,7 +17,7 @@ namespace Json2Xml
         /// <param name="outputToFile">Whether to write to file. If false, will print to console</param>
         /// <param name="outputFile">The location to write to. If null, will write to a file in the format {originalFile}.xml</param>
         /// <returns></returns>
-        private static async Task Main(FileInfo file, bool outputToFile = true, FileInfo outputFile = null)
+        private static async Task Main(FileInfo file, bool outputToFile = true, FileInfo? outputFile = default)
         {
             if (file == null)
             {
@@ -31,8 +31,7 @@ namespace Json2Xml
                 return;
             }
 
-            string json = default;
-            XNode xml = default;
+            string? json = default;
 
             using (var fs = file.Open(FileMode.Open))
             using (var sr = new StreamReader(fs))
@@ -43,6 +42,7 @@ namespace Json2Xml
             }
 
             Console.WriteLine("Converting to xml...");
+            XNode? xml;
             try
             {
                 xml = JsonConvert.DeserializeXNode(json);
@@ -61,7 +61,7 @@ namespace Json2Xml
                 using (var sw = new StreamWriter(fs))
                 {
                     Console.WriteLine($"writing to {outputFile.FullName}");
-                    await sw.WriteAsync(xml.ToString());
+                    await sw.WriteAsync(xml?.ToString());
                 }
             }
             else
